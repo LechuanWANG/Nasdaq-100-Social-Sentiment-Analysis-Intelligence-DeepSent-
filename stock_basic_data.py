@@ -69,7 +69,7 @@ def get_stock_fundamental_data(ticker):
     price_data = get_stock_price_data(ticker, period="1y")
     
     tech_indicators = {}
-    if not price_data.empty:
+    if not price_data.empty and len(price_data) >= 60:
         tech_indicators["5D Change (%)"] = round(((price_data["Close"].iloc[-1] / price_data["Close"].iloc[-5]) - 1) * 100, 2)
         tech_indicators["60D Change (%)"] = round(((price_data["Close"].iloc[-1] / price_data["Close"].iloc[-60]) - 1) * 100, 2)
         
@@ -82,30 +82,28 @@ def get_stock_fundamental_data(ticker):
         atr = talib.ATR(high, low, close_prices, timeperiod=14)
         tech_indicators["ATR (14)"] = round(atr[-1], 2) if not np.isnan(atr[-1]) else "N/A"
     
-    fund_indicators = {}
+    # ===== 关键修改：安全获取 info =====
+    info = {}
     try:
-        gross_margin = stock.info.get("grossMargins")
-        fund_indicators["Gross Margin (%)"] = round(gross_margin * 100, 2) if gross_margin is not None else "N/A"
-        roe = stock.info.get("returnOnEquity")
-        fund_indicators["ROE (%)"] = round(roe * 100, 2) if roe is not None else "N/A"
-        forward_pe = stock.info.get("forwardPE")
-        fund_indicators["Forward PE"] = round(forward_pe, 2) if forward_pe is not None else "N/A"
-        pb_ratio = stock.info.get("priceToBook")
-        fund_indicators["PB Ratio"] = round(pb_ratio, 2) if pb_ratio is not None else "N/A"
-        ps_ratio = stock.info.get("priceToSalesTrailing12Months")
-        fund_indicators["PS Ratio"] = round(ps_ratio, 2) if ps_ratio is not None else "N/A"
-    except:
-        fund_indicators = {
-            "Gross Margin (%)": "数据获取失败",
-            "ROE (%)": "数据获取失败",
-            "Forward PE": "数据获取失败",
-            "PB Ratio": "数据获取失败",
-            "PS Ratio": "数据获取失败"
-        }
+        info = stock.info or {}  # 如果 info 是 None，直接变空 dict
+        if not isinstance(info, dict):
+            info = {}
+    except Exception:
+        info = {}  # 任何异常都兜底为空
+    
+    fund_indicators = {
+        "Gross Margin (%)": round(info.get("grossMargins", 0) * 100, 2) if info.get("grossMargins") is not None else "N/A",
+        "ROE (%)": round(info.get("returnOnEquity", 0) * 100, 2) if info.get("returnOnEquity") is not None else "N/A",
+        "Forward PE": round(info.get("forwardPE", 0), 2) if info.get("forwardPE") is not None else "N/A",
+        "PB Ratio": round(info.get("priceToBook", 0), 2) if info.get("priceToBook") is not None else "N/A",
+        "PS Ratio": round(info.get("priceToSalesTrailing12Months", 0), 2) if info.get("priceToSalesTrailing12Months") is not None else "N/A",
+    }
     
     all_indicators = {**tech_indicators, **fund_indicators}
+    
+    # 安全获取公司名和 Sector
     all_indicators["Company Name"] = STOCK_FULL_NAMES.get(ticker, ticker)
-    all_indicators["Sector"] = stock.info.get("sector", "N/A")
+    all_indicators["Sector"] = info.get("sector", "N/A")  # 现在安全了，因为 info 一定是 dict
     
     return all_indicators
 
