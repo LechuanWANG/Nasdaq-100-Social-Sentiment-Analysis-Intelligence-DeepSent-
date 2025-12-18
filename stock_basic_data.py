@@ -6,10 +6,8 @@ import numpy as np
 import talib
 import warnings
 import requests
-
 warnings.filterwarnings("ignore")
-
-# ======================== 实时 Nasdaq-100 列表（启动时只抓一次 Ticker 列表） ========================
+# ======================== Real-time Nasdaq-100 list (Ticker list is only captured once at startup) ========================
 def _fetch_nasdaq100_tickers():
     try:
         tables = pd.read_html("https://en.wikipedia.org/wiki/Nasdaq-100")
@@ -36,7 +34,7 @@ STOCK_TICKERS = NASDAQ100_TICKERS
 STOCK_FULL_NAMES = {}  
 
 def get_company_name(ticker: str) -> str:
-    """实时获取公司全名（用户点哪只再请求，秒开）"""
+    "Retrieve the company's full name in real time"
     if ticker in STOCK_FULL_NAMES:
         return STOCK_FULL_NAMES[ticker]
     try:
@@ -54,7 +52,7 @@ TIME_PERIODS = {
     "1 Year":   "1y"
 }
 
-# ======================== 其余代码完全不动（指标、图表函数等） ========================
+# ========================= indicators, chart functions, etc. ========================
 
 def get_stock_price_data(ticker, period="1y", interval="1d"):
     stock = yf.Ticker(ticker)
@@ -82,14 +80,14 @@ def get_stock_fundamental_data(ticker):
         atr = talib.ATR(high, low, close_prices, timeperiod=14)
         tech_indicators["ATR (14)"] = round(atr[-1], 2) if not np.isnan(atr[-1]) else "N/A"
     
-    # ===== 关键修改：安全获取 info =====
+    # ===== Securely obtain info =====
     info = {}
     try:
-        info = stock.info or {}  # 如果 info 是 None，直接变空 dict
+        info = stock.info or {}  # If info is None, simply empty the dictionary.
         if not isinstance(info, dict):
             info = {}
     except Exception:
-        info = {}  # 任何异常都兜底为空
+        info = {}  # Any anomalies will be covered by a zero-sum game.
     
     fund_indicators = {
         "Gross Margin (%)": round(info.get("grossMargins", 0) * 100, 2) if info.get("grossMargins") is not None else "N/A",
@@ -101,15 +99,15 @@ def get_stock_fundamental_data(ticker):
     
     all_indicators = {**tech_indicators, **fund_indicators}
     
-    # 安全获取公司名和 Sector
+    # Securely obtain company name and sector
     all_indicators["Company Name"] = STOCK_FULL_NAMES.get(ticker, ticker)
-    all_indicators["Sector"] = info.get("sector", "N/A")  # 现在安全了，因为 info 一定是 dict
+    all_indicators["Sector"] = info.get("sector", "N/A") 
     
     return all_indicators
 
 # ======================== 图表绘制函数（无修改，保留原有） ========================
 def plot_ths_style_chart(ticker, df_price, period_label):
-    """绘制仿同花顺风格的K线+成交量组合图"""
+    "Candlestick chart + volume combination chart"
     if df_price.empty:
         return None, None
     
@@ -126,7 +124,7 @@ def plot_ths_style_chart(ticker, df_price, period_label):
         showlegend=False
     )])
     
-    # 移动平均线
+    # Moving Average
     df_price["MA5"] = df_price["Close"].rolling(window=5).mean()
     df_price["MA10"] = df_price["Close"].rolling(window=10).mean()
     df_price["MA20"] = df_price["Close"].rolling(window=20).mean()
@@ -165,7 +163,7 @@ def plot_ths_style_chart(ticker, df_price, period_label):
         showlegend=True
     ))
     
-    # K线图样式
+    # Candlestick Chart Style
     fig_kline.update_layout(
         title=f"{ticker} Price Chart ({period_label})",
         title_font=dict(size=16, weight="bold", family="Arial"),
@@ -200,7 +198,7 @@ def plot_ths_style_chart(ticker, df_price, period_label):
         tickfont=dict(size=10)
     )
     
-    # 成交量图
+    # Trading Volume Chart
     fig_volume = go.Figure() #FF4500 #008000
     colors = ["#008000" if row["Close"] >= row["Open"] else "#FF4500" for _, row in df_price.iterrows()]
     fig_volume.add_trace(go.Bar(
@@ -246,32 +244,32 @@ def plot_sentiment_price_correlation(ticker, price_data, social_data, period_nam
     df_posts = pd.DataFrame(social_data)
     df_posts["date"] = pd.to_datetime(df_posts["date_str"])
     
-    # 1. 计算每日原始情感分数均值（平滑前）
+    # 1. Calculate the daily raw sentiment score mean (before smoothing)
     daily_raw_sent = df_posts.groupby("date")["sentiment"].mean().reset_index()
     daily_raw_sent.rename(columns={"sentiment": "raw_sentiment"}, inplace=True)
     
-    # 2. 计算每日平滑情感分数均值（如果存在smooth_sentiment字段）
+    # 2. Calculate the daily smoothed sentiment score mean (if the smooth_sentiment field exists).
     if "smooth_sentiment" in df_posts.columns:
         daily_smooth_sent = df_posts.groupby("date")["smooth_sentiment"].mean().reset_index()
         daily_smooth_sent.rename(columns={"smooth_sentiment": "smooth_sentiment"}, inplace=True)
-        # 合并原始+平滑分数
+        # Combine original + smoothed scores
         daily_sent = daily_raw_sent.merge(daily_smooth_sent, on="date", how="inner")
     else:
-        # 无平滑分数时，仅保留原始分数
+        # When there is no smoothed fraction, only the original fraction is retained.
         daily_sent = daily_raw_sent
         daily_sent["smooth_sentiment"] = daily_sent["raw_sentiment"]
 
-    # 合并价格和情绪数据
+    # Merging price and sentiment data
     price_data["Date"] = pd.to_datetime(price_data["Date"])
     merged = price_data[["Date", "Close"]].merge(daily_sent, left_on="Date", right_on="date", how="left")
-    merged = merged.dropna()  # 清除无情绪的日子
+    merged = merged.dropna()  # Clearing Away Emotional Days
 
     if len(merged) < 10:
         return None
 
     fig = go.Figure()
 
-    # 3. 绘制股价线（主Y轴）
+    # 3. Draw the stock price line (main Y-axis)
     fig.add_trace(go.Scatter(
         x=merged["Date"],
         y=merged["Close"],
@@ -281,18 +279,18 @@ def plot_sentiment_price_correlation(ticker, price_data, social_data, period_nam
         yaxis="y"
     ))
 
-    # 4. 绘制平滑后情感分数（次Y轴，实心圆，绿色）
+    # 4. Plot the smoothed sentiment score (secondary Y-axis, solid circle, green).
     fig.add_trace(go.Scatter(
         x=merged["Date"],
         y=merged["smooth_sentiment"],
-        mode="markers+lines",  # 带连线，更易看趋势
+        mode="markers+lines", 
         name="Smoothed Sentiment",
         marker=dict(size=10, color="#00FF88", opacity=0.8),
         line=dict(color="#00FF88", width=1),
         yaxis="y2"
     ))
 
-    # 5. 绘制原始情感分数（次Y轴，空心圆，橙色，标注在平滑分数旁）
+   # 5. Plot the original sentiment score (secondary Y-axis, hollow circle, orange, labeled next to the smoothed score).
     fig.add_trace(go.Scatter(
         x=merged["Date"],
         y=merged["raw_sentiment"],
@@ -300,17 +298,17 @@ def plot_sentiment_price_correlation(ticker, price_data, social_data, period_nam
         name="Raw Sentiment (Pre-smoothing)",
         marker=dict(
             size=8, 
-            color="#FF8C00",  # 橙色区分原始分数
+            color="#FF8C00",  
             opacity=0.9,
-            symbol="circle-open",  # 空心圆样式
+            symbol="circle-open", 
             line=dict(color="#FF8C00", width=1)
         ),
         yaxis="y2",
-        # 悬停提示补充原始分数值
+        # Hover hints to supplement raw score values
         hovertemplate="Date: %{x}<br>Raw Sentiment: %{y:.4f}<extra></extra>"
     ))
 
-    # 6. 布局优化
+    # 6. Layout Optimization
     fig.update_layout(
         title=f"{ticker} — Price vs Sentiment Correlation ({period_name})",
         xaxis_title="Date",
@@ -323,7 +321,7 @@ def plot_sentiment_price_correlation(ticker, price_data, social_data, period_nam
             title="Sentiment Score",
             side="right",
             overlaying="y",
-            range=[-1.1, 1.1],  # 固定情感分数范围（-1到1）
+            range=[-1.1, 1.1],  # Fixed sentiment score range (-1 to 1)
             color="#00FF88"
         ),
         template="plotly_white",
