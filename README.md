@@ -6,29 +6,27 @@
 
 ## Example Output
 ### *Part 1: Fundamental Data Sector*
-<img width="1126" height="1100" alt="d50cf9c14377d9d46c40b0e632a5f13a" src="https://github.com/user-attachments/assets/ebd2fbed-a875-4eda-8549-8859708abb0b" />
+<img width="1766" height="1584" alt="fbcff75e40d0482cd67d467e215e17ba" src="https://github.com/user-attachments/assets/d7117c51-ce56-44ac-9fec-78d222059e96" />
 
 ### *Part 2: Sentiment Analysis Report Generator*
-<img width="1102" height="328" alt="7c56b2690a8bef945027e21add83c508" src="https://github.com/user-attachments/assets/461679f3-1dc1-4303-a037-9db04a8cf363" />
+<img width="1760" height="478" alt="a881ed855f7d65079e600339cb907e58" src="https://github.com/user-attachments/assets/5905318e-1ef8-4b50-94f8-6c8a2654b18d" />
 
 ### *Part 3: Report Content (Taking Nvidia's December 2nd to December 9th as an example)*
 #### *The report contains Snapshot & Trend Sector, `Sentiment Anomaly Drivers` Analysis, `Bull vs Bear Narrative Dominance`, `Short-Term Price Implication`, and `Daily Event Timeline` sections.*
-<img width="1706" height="288" alt="038a961020d09a7154336a933e16ae18" src="https://github.com/user-attachments/assets/d0a8a53b-6c98-40a6-86ee-cbd05791a7ed" />
-<img width="1462" height="1620" alt="3a00ef792e4fc988cff61d327712629d" src="https://github.com/user-attachments/assets/c8d94679-a63d-4a15-875f-a949e46ef725" />
+<img width="1738" height="468" alt="8161ff41bbb4a8f3fc63c071ff34903b" src="https://github.com/user-attachments/assets/fc3449a3-60c9-4ea9-941f-01b86db54296" />
+<img width="1688" height="1658" alt="1be9c08f14a75e1f0ee5d0a1a88fe33d" src="https://github.com/user-attachments/assets/f60c1e9b-bf60-404b-8b5d-cb305ac0a8b1" />
 
-<img width="1458" height="464" alt="fb68696e30dee46046f9fe1808471b51" src="https://github.com/user-attachments/assets/8f0bddf4-a902-4225-ac8f-f4dcd12550c4" />
-<img width="1600" height="744" alt="9ad7427ecabc735a1b72c2619dac2e93" src="https://github.com/user-attachments/assets/42a59c74-41ac-4d92-9444-d31a0576d691" />
+<img width="1798" height="888" alt="106c6baaa21faf45b6d3fbff8c07e1b8" src="https://github.com/user-attachments/assets/bc995a14-697e-40f7-941f-c3cfe073e8ae" />
+<img width="1752" height="966" alt="24377f20d2e73fa6857c410ebaa19031" src="https://github.com/user-attachments/assets/21c34525-004e-4509-977c-13637b9b878c" />
+<img width="1766" height="1316" alt="ff5e89be399a5bb9dec1bfbdce17af87" src="https://github.com/user-attachments/assets/a32ac72a-ae85-4096-b7ac-9c2f43282668" />
+<img width="1726" height="344" alt="b97806c239dc4c02ff676e868d88af41" src="https://github.com/user-attachments/assets/09ceeafb-5841-4250-ae5b-346b3cf55512" />
+<img width="1730" height="142" alt="a2093bf9978c4d9f63fbe5971544578d" src="https://github.com/user-attachments/assets/feb2a2d2-74f9-422a-8162-6cfdc21ab46a" />
 
-<img width="1598" height="1302" alt="f4b0020058fe8ae7c104feba0d958793" src="https://github.com/user-attachments/assets/d9ff2c53-1a5a-4ed0-a602-cff24c47ba2a" />
+<img width="1778" height="1302" alt="a8b8b7a0560715085f4457faedd85d42" src="https://github.com/user-attachments/assets/a743c0b9-d16a-4981-835a-17114107ea98" />
+<img width="1762" height="1162" alt="c6162ae1aee367c60357a577fc884ece" src="https://github.com/user-attachments/assets/20138d4a-df80-4733-8e8d-e862a059ec7e" />
+<img width="1750" height="1502" alt="5c812b1393e7989819edfa029cbc9a95" src="https://github.com/user-attachments/assets/2a96b830-2b7e-443b-89c8-c6dfff5f07d3" />
+<img width="1772" height="570" alt="f84aee48e4058622acbceb6948d44918" src="https://github.com/user-attachments/assets/198c71cd-5670-4ee2-b3d4-01ded94fce30" />
 
-<img width="1586" height="284" alt="4e2533dd937f3bff86e744135208b0e7" src="https://github.com/user-attachments/assets/1286f8ce-a74f-48f3-aa0e-e34a86afc157" />
-<img width="1598" height="326" alt="d5611238cce6b5f692b96274875194e1" src="https://github.com/user-attachments/assets/ca8a038e-1023-4609-94ee-98ff1ea14810" />
-
-<img width="1586" height="1642" alt="476145f0831e66e10d63402138931427" src="https://github.com/user-attachments/assets/8afd0a99-2754-4593-9cd5-4421f5004c20" />
-<img width="1590" height="370" alt="24dd35945ef0114c18d52e853ca0d6e9" src="https://github.com/user-attachments/assets/c0708a61-f8e0-4c3f-beed-8fff53ec2e81" />
-<img width="1588" height="1182" alt="4a21eb5a43f2fad4fb99625d7bad4f43" src="https://github.com/user-attachments/assets/037a8325-7ce8-4c6a-83f6-bd118e2248cb" />
-<img width="1598" height="1132" alt="bd0a7d703d9589f6d07a9dea8172043c" src="https://github.com/user-attachments/assets/3e6de884-d8d6-4cbe-bbbd-06f0b85d6313" />
-<img width="1600" height="626" alt="1ed4d91d78261ba747d1618b4e2ba7b6" src="https://github.com/user-attachments/assets/e824e312-d17d-484f-938d-882cb4be6d83" />
 
 
 # Our Purpose
