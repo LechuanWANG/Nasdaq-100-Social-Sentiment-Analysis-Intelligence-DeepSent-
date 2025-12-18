@@ -2,6 +2,7 @@
 
 - **Authors**: *Lechuan Wang, Minyoung Woo, Xuantao Yuan, Yijie Wang*
 - **Institution**: Hong Kong University of Science and Technology, MSc in Business Analytics
+- **Email: lechuanwang2003@163.com**
 
 ## Example Output
 ### *Part 1: Fundamental Data Sector*
