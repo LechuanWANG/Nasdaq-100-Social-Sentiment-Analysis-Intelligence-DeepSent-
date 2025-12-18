@@ -10,8 +10,10 @@ import plotly.io as pio
 from collections import defaultdict
 import warnings
 warnings.filterwarnings("ignore")
+import streamlit as st
 
-ALPHA_KEY = "HBORPY3V0GBWUHJ3"
+def get_alpha_vantage_key() -> str:
+    return st.secrets["ALPHA_VANTAGE_API_KEY"]
 
 def get_fundamental_data(ticker: str) -> dict:
     stock = yf.Ticker(ticker)
@@ -33,8 +35,8 @@ def smooth_curve(x, y, window_size=3):
     y_min = y_series.rolling(window=window_size, min_periods=1).min().values
     y_max = y_series.rolling(window=window_size, min_periods=1).max().values
     return x, y_mean, y_min, y_max
-
-# ======================== 核心函数：支持日期范围 + 每日上限 + 保存 URL ========================
+    
+# ======================== Core Functions: Supports Date Range + Daily Limit + Save URL ========================
 def collect_social_data(
     ticker: str,
     daily_limit: int = 30,
@@ -42,6 +44,7 @@ def collect_social_data(
     end_date: str = None       # "2025-12-08"
 ) -> dict:
     base_url = "https://www.alphavantage.co/query"
+    api_key = get_alpha_vantage_key()
     all_posts = []
     seen_titles = set()
     daily_counter = defaultdict(int)
@@ -57,7 +60,7 @@ def collect_social_data(
     else:
         start_dt = datetime.strptime(start_date, "%Y-%m-%d").date()
 
-    # 构造 8 天区间
+    # Construct an 8-day interval
     intervals = []
     current = start_dt
     while current <= end_dt:
@@ -69,9 +72,10 @@ def collect_social_data(
         ))
         current = interval_end + timedelta(days=1)
 
-    print(f"为 {ticker} 抓取情绪数据：{start_date or 'auto'} 至 {end_date or 'today'}，每日最多 {daily_limit} 条")
+    print(f"为 {ticker} Capture sentiment data：{start_date or 'auto'} to {end_date or 'today'}，Maximum of {daily_limit} items per day")
 
-    for i, (t_from, t_to) in enumerate(intervals):
+    for i, (t_from, t_to) in enumerate(intervals): 
+
         params = {
             "function": "NEWS_SENTIMENT",
             "tickers": ticker.upper(),
@@ -79,7 +83,7 @@ def collect_social_data(
             "time_to": t_to,
             "limit": 1000,
             "sort": "LATEST",
-            "apikey": ALPHA_KEY
+            "apikey": api_key
         }
 
         try:
@@ -108,8 +112,8 @@ def collect_social_data(
 
                 score = float(item.get("overall_sentiment_score", 0))
 
-                # ========== 关键新增：保存原始新闻 URL ==========
-                link_url = item.get("url", "")  # Alpha Vantage 标准字段就是 "url"
+                # ========== Key Addition: Preserve Original News URL ==========
+                link_url = item.get("url", "")  
 
                 all_posts.append({
                     "post": full_text,
@@ -118,7 +122,7 @@ def collect_social_data(
                     "source": "Alpha Vantage",
                     "time_published": pub_time,
                     "date_str": date_key,
-                    "link": link_url  # ←←← 关键字段！report_core 会读取这个
+                    "link": link_url  # ←←← Key field. This is what report_core reads.
                 })
                 daily_counter[date_key] += 1
 
@@ -131,7 +135,7 @@ def collect_social_data(
 
     all_posts.sort(key=lambda x: x["time_published"], reverse=True)
 
-    # ======================== 生成趋势图（保持不变） ========================
+    # ======================== Generate a trend chart ========================
     img_path = None
     html_path = None
     fig = None
@@ -183,9 +187,9 @@ def collect_social_data(
         "avg_sentiment": round(overall_avg_sentiment, 4) if overall_avg_sentiment else None
     }
 
-# ======================== 本地测试 ========================
+# ======================== Local Test ========================
 if __name__ == "__main__":
     result = collect_social_data("NVDA", daily_limit=30, start_date="2025-06-01", end_date="2025-12-15")
-    print(f"抓取完成：{result['total']} 条，平均情绪 {result['avg_sentiment']}")
+    print(f"Successfully captured：{result['total']} comments，Average sentiment is {result['avg_sentiment']}")
     if result["fig"]:
         result["fig"].show()
