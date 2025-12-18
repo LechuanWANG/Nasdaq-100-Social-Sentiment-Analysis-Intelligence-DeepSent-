@@ -1,4 +1,4 @@
-# report_core.py ← 2025 Final Institutional Edition (完美显示新闻来源链接版)
+# report_core.py
 import os
 import uuid
 import time
