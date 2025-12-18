@@ -1,7 +1,7 @@
 # DeepSent: *Nasdaq-100 Social Sentiment Analysis Intelligence*
 
 ## Project Overview
-- **Authors**: Lechuan Wang, Minyoung Woo, Yijie Wang, Xuantao Yuan
+- **Authors**: Lechuan Wang, Minyoung Woo, Xuantao Yuan, Yijie Wang
 - **Institution**: Hong Kong University of Science and Technology, MSc in Business Analytics
 - **Core Purpose**: AI-powered sentiment analysis tool for Nasdaq-100 stocks, addressing information overload in financial decision-making
 
@@ -94,7 +94,8 @@
 
 ## 6. System Architecture: Multi-Staged AI Agent
 
-<img width="2628" height="1112" alt="8878825685d31859c1cfb1f01873814b" src="https://github.com/user-attachments/assets/abdc3f37-23f6-4242-a084-32390ccc42c5" />
+<img width="2660" height="1108" alt="3a2a280ce34caa19c5a29d71c553f056" src="https://github.com/user-attachments/assets/ed422849-bcfd-4241-ab2c-dc111e1e2fd8" />
+
 
 
 
