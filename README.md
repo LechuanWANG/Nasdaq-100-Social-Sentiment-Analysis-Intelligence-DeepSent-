@@ -94,7 +94,8 @@
 
 ## 6. System Architecture: Multi-Staged AI Agent
 
-<img width="2066" height="852" alt="ad78cc629d766fcfcc0cb995dc787065" src="https://github.com/user-attachments/assets/50cc2638-2e26-4be0-b638-e24483c77786" />
+<img width="2638" height="1128" alt="651a1243b4b6bf935c090ca38f3d02d2" src="https://github.com/user-attachments/assets/3fe8335f-f7fb-4c13-8fb5-8ef00ba2daaa" />
+
 
 ---
 
