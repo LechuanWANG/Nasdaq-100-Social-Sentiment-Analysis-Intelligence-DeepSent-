@@ -1,4 +1,4 @@
-# data_collector.py  ← 2025年12月终极版 + 完整保存新闻 URL（关键修改）
+# data_collector.py
 import yfinance as yf
 import requests
 from datetime import datetime, timedelta, timezone
